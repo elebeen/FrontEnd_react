@@ -11,3 +11,105 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* === PALETA DE COLORES GOURMET === */
+:root {
+  --primary: #d47b9c;      /* rosa pastel */
+  --secondary: #f2c9ac;    /* durazno */
+  --accent: #fbe8e2;       /* crema rosada */
+  --text: #4a4a4a;         /* gris oscuro */
+  --bg: #fff6f8;           /* fondo suave */
+  --highlight: #ffe5ec;    /* resalte */
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', 'Roboto', sans-serif;
+  font-size: 16px;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+  color: var(--primary);
+}
+
+a:hover {
+  color: #b45e7c;
+}
+
+h1, h2, h3, h4, h5 {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* Tarjetas de productos */
+.card {
+  border-radius: 16px;
+  border: none;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+.card img {
+  border-radius: 12px;
+  max-height: 280px;
+  object-fit: cover;
+}
+
+/* Botones personalizados */
+.btn-primary {
+  background-color: var(--primary);
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #b45e7c;
+}
+
+.btn-success {
+  background-color: #98c379;
+  border: none;
+}
+
+.btn-success:hover {
+  background-color: #7ba55e;
+}
+
+.btn-outline-primary {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--primary);
+  color: white;
+}
+
+/* Container general */
+.container {
+  max-width: 1100px;
+}
+
+/* Navbar */
+.navbar {
+  background-color: white !important;
+  box-shadow: 0 1px 10px rgba(0,0,0,0.1);
+}
+
+/* Footer */
+footer {
+  margin-top: 5rem;
+  text-align: center;
+  color: #aaa;
+  font-size: 0.9rem;
+  padding: 2rem;
+  background-color: #fdf0f4;
+}
+
+/* Estrellas reseñas */
+.stars {
+  font-size: 1.2rem;
+  color: #ffc107;
+}
