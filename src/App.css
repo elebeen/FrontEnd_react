@@ -1,4 +1,4 @@
-/* ==== PALETA BARBARA BRENNI PASTELERÍA SOLO NUDES ==== */
+/* ==== PALETA BARBARA BRENNI PASTELERÍA ==== */
 :root {
   --nude-claro: #f5f1ec; /* antes: #F5EBDD */
   --nude-medio: #A98C74;
@@ -6,6 +6,14 @@
   --nude-sombra: rgba(138, 111, 91, 0.3);
   --nude-claro-suave: #EFE0D0;
   --nude-transparente: rgba(169, 140, 116, 0.08);
+  --rosa-pastel: #ffb6c1;
+  --celeste-suave: #8ab4f8;
+  --verde-menta: #70ff8a;
+  --amarillo-vainilla: #fff7ae;
+  --blanco: #ffffff;
+  --gris-claro: #f5f5f5;
+  --chocolate: #6d4c41;
+  --rojo-coral: #ff5a60;
 }
 
 body {
@@ -22,7 +30,7 @@ body {
 }
 
 .navbar {
-  background: var(--nude-oscuro);
+  background: var(--chocolate);
   box-shadow: 0 2px 10px var(--nude-sombra);
 }
 

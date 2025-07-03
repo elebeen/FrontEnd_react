@@ -9,6 +9,7 @@ import Pago from './pages/Pago';
 import Login from './pages/Login';
 import RutaProtegida from './components/RutaProtegida';
 import Register from './pages/Register';
+import Footer from './components/Footer';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
 
         </Routes>
       </div>
+      <Footer />
     </Router>
   );
 }

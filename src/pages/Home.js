@@ -61,10 +61,10 @@ const Home = () => {
     <Container className="mt-5">
       {/* Encabezado */}
       <div className="text-center mb-4">
-        <h1 className="fw-bold" style={{ color: '#8ab4f8' }}>Bienvenida a Sweetify 🍓</h1>
-        <p className="lead text-secondary">
+        <h1 className="fw-bold" style={{ color: '#6d4c41' }}>Bienvenido a Sweetify </h1>
+        <p className="lead text-secondary fw-medium">
           Descubre nuestros postres, bebidas y tortas artesanales.<br />
-          Todo hecho con amor y un toque gourmet. 🧁✨
+          Todo hecho con amor y un toque gourmet.
         </p>
       </div>
 
@@ -85,12 +85,11 @@ const Home = () => {
         ))}
       </Carousel>
 
-      {/* NUEVO CONTENIDO */}
       <div className="mt-5 text-light">
 
         {/* Nuestro Objetivo */}
         <section className="mb-5">
-          <h2 style={{ color: '#70ff8a' }}>🎯 Nuestro Objetivo</h2>
+          <h2 style={{ color: '#70ff8a' }}> Nuestro Objetivo</h2>
           <p className="text-secondary">
             En <strong>Sweetify</strong> buscamos endulzar cada momento especial de tu vida con postres
             artesanales de alta calidad, preparados con los mejores ingredientes y mucha dedicación.
@@ -100,7 +99,7 @@ const Home = () => {
 
         {/* Acerca de Nosotros */}
         <section className="mb-5">
-          <h2 style={{ color: '#8ab4f8' }}>👩‍🍳 Acerca de Nosotros</h2>
+          <h2 style={{ color: '#8ab4f8' }}> Acerca de Nosotros</h2>
           <p className="text-secondary">
             Somos una pastelería creativa y moderna fundada por amantes del arte dulce.
             Nos inspiramos en las estaciones, celebraciones y emociones para crear productos únicos
@@ -109,8 +108,8 @@ const Home = () => {
         </section>
 
         {/* Contacto */}
-        <section className="mb-5">
-          <h2 style={{ color: '#ff5a60' }}>📱 Contáctanos</h2>
+        {/* <section className="mb-5">
+          <h2 style={{ color: '#ff5a60' }}> Contáctanos</h2>
           <Row className="mt-3 text-center justify-content-center">
             <Col xs={4} md={2}>
               <a
@@ -143,7 +142,7 @@ const Home = () => {
               </a>
             </Col>
           </Row>
-        </section>
+        </section> */}
       </div>
     </Container>
   );
