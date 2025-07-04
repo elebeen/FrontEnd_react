@@ -69,23 +69,11 @@ const Login = () => {
       localStorage.setItem('refresh', res.data.refresh);
       
       // Actualizar contexto de autenticación
-      login({
-        token: res.data.access,
-      });
+      login(res.data.access);
       
       navigate('/');
     } catch (err) {
-      let errorMessage = 'Error al iniciar sesión';
-      
-      if (err.response?.status === 401) {
-        errorMessage = 'Credenciales incorrectas';
-      } else if (err.response?.data?.detail) {
-        errorMessage = err.response.data.detail;
-      }
-      
-      toast.error(errorMessage, {
-        position: "top-center"
-      });
+      setErrors('Error al iniciar sesión. Verifica tus credenciales.');
     } finally {
       setLoading(false);
     }
