@@ -19,7 +19,7 @@ const Footer = () => {
                   Sweetify Perú
                 </h3>
               </Link>
-              <p className="text-muted" style={{ lineHeight: '1.6' }}>
+              <p className="" style={{ lineHeight: '1.6' }}>
                 Deliciosos postres artesanales hechos con amor y los mejores ingredientes para endulzar tus momentos especiales.
               </p>
             </div>
@@ -52,27 +52,27 @@ const Footer = () => {
             </h5>
             <ul className="list-unstyled">
               <li className="mb-2">
-                <Link to="/" className="text-muted text-decoration-none hover-text-primary">
+                <Link to="/" className=" text-decoration-none hover-text-primary">
                   Inicio
                 </Link>
               </li>
               <li className="mb-2">
-                <Link to="/productos" className="text-muted text-decoration-none hover-text-primary">
+                <Link to="/productos" className=" text-decoration-none hover-text-primary">
                   Productos
                 </Link>
               </li>
               <li className="mb-2">
-                <Link to="/nosotros" className="text-muted text-decoration-none hover-text-primary">
+                <Link to="/nosotros" className=" text-decoration-none hover-text-primary">
                   Nosotros
                 </Link>
               </li>
               <li className="mb-2">
-                <Link to="/contacto" className="text-muted text-decoration-none hover-text-primary">
+                <Link to="/contacto" className=" text-decoration-none hover-text-primary">
                   Contacto
                 </Link>
               </li>
               <li>
-                <Link to="/terminos" className="text-muted text-decoration-none hover-text-primary">
+                <Link to="/terminos" className=" text-decoration-none hover-text-primary">
                   Términos
                 </Link>
               </li>
@@ -188,10 +188,10 @@ const Footer = () => {
         {/* Derechos de autor */}
         <Row className="mt-5 pt-3 border-top border-secondary">
           <Col className="text-center">
-            <p className="mb-1 text-muted">
+            <p className="mb-1">
               &copy; {new Date().getFullYear()} Sweetify Perú. Todos los derechos reservados.
             </p>
-            <p className="mb-0 text-muted small">
+            <p className="mb-0 small">
               Diseñado y desarrollado con ❤️ por el equipo Sweetify
             </p>
           </Col>

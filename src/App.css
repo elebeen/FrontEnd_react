@@ -248,6 +248,12 @@ body {
   opacity: 1;
 }
 
+footer p,
+footer span,
+footer div { /* Selecciona elementos comunes dentro del footer */
+    color: var(--blanco); /* O el color que desees de tu paleta */
+}
+
 @media (max-width: 768px) {
   .login-container {
     padding: 1rem;
