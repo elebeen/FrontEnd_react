@@ -1,10 +1,8 @@
-import React from 'react';
-import { Carousel, Container, Row, Col } from 'react-bootstrap';
-import {
-  FaInstagram,
-  FaFacebook,
-  FaWhatsapp,
-} from 'react-icons/fa';
+import React, { useEffect, useState } from 'react';
+import { Carousel, Container, Row, Col, Button, Card } from 'react-bootstrap';
+
+import ProductCard from '../components/ProductCard';
+import axios from 'axios';
 
 import img1 from '../assets/Banana-Chia-Chocolate-Chip-Muffins-15-1.webp';
 import img2 from '../assets/Brownies-con-nueces.png';
@@ -29,6 +27,7 @@ import img20 from '../assets/Tartaleta de limón.jpeg';
 import img21 from '../assets/Torta maracuya.jpg';
 import img22 from '../assets/tortapaneton.png';
 import img23 from '../assets/znahoria.jpeg';
+import { Link } from 'react-router-dom';
 
 const images = [
   { src: img1, alt: 'Muffins de chía', caption: 'Muffins de Chía y Chocolate' },
@@ -57,93 +56,108 @@ const images = [
 ];
 
 const Home = () => {
+  const [featuredProducts, setFeaturedProducts] = useState([]); // Inicializa como un array vacío
+
+  useEffect(() => {
+    // Realiza la llamada a la API para obtener productos
+    axios.get('http://localhost:8000/api/productos/')
+      .then(response => {
+        // Filtra o selecciona los productos que quieres destacar en la Home.
+        // Aquí tomamos los primeros 4 productos como ejemplo.
+        setFeaturedProducts(response.data.slice(0, 4));
+      })
+      .catch(error => {
+        console.error('Error al cargar productos destacados:', error);
+      });
+  }, []);
+
   return (
     <Container className="mt-5">
-      {/* Encabezado */}
-      <div className="text-center mb-4">
-        <h1 className="fw-bold" style={{ color: '#6d4c41' }}>Bienvenido a Sweetify </h1>
-        <p className="lead text-secondary fw-medium">
-          Descubre nuestros postres, bebidas y tortas artesanales.<br />
-          Todo hecho con amor y un toque gourmet.
-        </p>
-      </div>
+      {/* Sección Hero: Más impactante y con llamado a la acción */}
+      <Row className="text-center py-5 rounded mb-5" style={{ backgroundColor: 'var(--accent)' }}>
+        <Col>
+          <h1 className="display-4 fw-bolder" style={{ color: 'var(--primary)' }}>
+            Sweetify: Donde Cada Bocado es una Celebración 🎉
+          </h1>
+          <p className="lead" style={{ color: 'var(--text)' }}>
+            Explora nuestra exquisita selección de repostería artesanal, bocados salados y bebidas gourmet.
+            Todo hecho con pasión, para endulzar tu día.
+          </p>
+          <Button as={Link} to="/productos" className="btn-primary mt-4 fs-5">
+            Ver Todos los Productos
+          </Button>
+        </Col>
+      </Row>
 
-      {/* Carrusel */}
-      <Carousel style={{ borderRadius: '16px', overflow: 'hidden' }}>
+      {/* Carrusel de Imágenes: Muestra la variedad */}
+      <h2 className="titulo-productos text-center mb-4" style={{ color: 'var(--text)' }}>Nuestras Creaciones en Imágenes</h2>
+      <Carousel interval={3000} className="mb-5 shadow rounded-4" fade> {/* Añadido fade, shadow, rounded-4 */}
         {images.map((img, index) => (
           <Carousel.Item key={index}>
             <img
               className="d-block w-100"
               src={img.src}
               alt={img.alt}
-              style={{ maxHeight: '500px', objectFit: 'cover' }}
+              style={{ maxHeight: '500px', objectFit: 'cover', borderRadius: '16px' }}
             />
-            <Carousel.Caption>
-              <h5>{img.caption}</h5>
+            <Carousel.Caption className="bg-dark bg-opacity-50 rounded p-2">
+              <h5 className="text-light">{img.caption}</h5>
             </Carousel.Caption>
           </Carousel.Item>
         ))}
       </Carousel>
 
-      <div className="mt-5 text-light">
+      {/* Sección de Productos Destacados/Novedades: Usa ProductCard */}
+      <section className="mb-5 py-4">
+        <h2 className="titulo-productos text-center mb-4" style={{ color: 'var(--primary)' }}>
+          Sabores que Enamoran
+        </h2>
+        <Row className="gy-4 gx-4 justify-content-center">
+          {featuredProducts.length > 0 ? (
+            featuredProducts.map(producto => (
+              <Col key={producto.id} xs={12} sm={6} md={4} lg={3} className="d-flex">
+                <ProductCard producto={producto} />
+              </Col>
+            ))
+          ) : (
+            <p className="text-center text-muted">Cargando productos destacados...</p>
+          )}
+        </Row>
+        <div className="text-center mt-5">
+          <Button as={Link} to="/productos" className="btn-primary fs-5">
+            Descubre Más Delicias
+          </Button>
+        </div>
+      </section>
 
-        {/* Nuestro Objetivo */}
-        <section className="mb-5">
-          <h2 style={{ color: '#70ff8a' }}> Nuestro Objetivo</h2>
-          <p className="text-secondary">
-            En <strong>Sweetify</strong> buscamos endulzar cada momento especial de tu vida con postres
-            artesanales de alta calidad, preparados con los mejores ingredientes y mucha dedicación.
-            Nuestra meta es llevar felicidad a través del sabor y el diseño de cada creación.
-          </p>
-        </section>
+      {/* Nuestra Misión: Sección con fondo suave y sombra */}
+      <section className="mb-5 py-5 rounded shadow-sm" style={{ backgroundColor: 'var(--highlight)' }}>
+        <Row className="justify-content-center">
+          <Col md={8} className="text-center">
+            <h2 className="mb-3" style={{ color: 'var(--primary)' }}>Nuestra Misión 💖</h2>
+            <p className="lead" style={{ color: 'var(--text)' }}>
+              En <strong>Sweetify</strong> nos dedicamos a transformar ingredientes simples en obras maestras comestibles.
+              Nuestro objetivo es ser parte de tus celebraciones y momentos especiales, ofreciendo postres
+              artesanales de la más alta calidad, hechos con amor y dedicación. Cada creación es un reflejo de nuestra pasión
+              por endulzar la vida de nuestros clientes.
+            </p>
+          </Col>
+        </Row>
+      </section>
 
-        {/* Acerca de Nosotros */}
-        <section className="mb-5">
-          <h2 style={{ color: '#8ab4f8' }}> Acerca de Nosotros</h2>
-          <p className="text-secondary">
-            Somos una pastelería creativa y moderna fundada por amantes del arte dulce.
-            Nos inspiramos en las estaciones, celebraciones y emociones para crear productos únicos
-            que no solo se ven bien, ¡sino que también saben increíble!
-          </p>
-        </section>
-
-        {/* Contacto */}
-        {/* <section className="mb-5">
-          <h2 style={{ color: '#ff5a60' }}> Contáctanos</h2>
-          <Row className="mt-3 text-center justify-content-center">
-            <Col xs={4} md={2}>
-              <a
-                href="https://wa.me/51999999999"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-success fs-3"
-              >
-                <FaWhatsapp /> <div className="fs-6">WhatsApp</div>
-              </a>
-            </Col>
-            <Col xs={4} md={2}>
-              <a
-                href="https://instagram.com/sweetifyperu"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-danger fs-3"
-              >
-                <FaInstagram /> <div className="fs-6">Instagram</div>
-              </a>
-            </Col>
-            <Col xs={4} md={2}>
-              <a
-                href="https://facebook.com/sweetifyperu"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary fs-3"
-              >
-                <FaFacebook /> <div className="fs-6">Facebook</div>
-              </a>
-            </Col>
-          </Row>
-        </section> */}
-      </div>
+      {/* Nuestra Historia: Sección con fondo contrastante y sombra */}
+      <section className="mb-5 py-5 rounded shadow-sm" style={{ backgroundColor: 'var(--nude-claro-suave)' }}>
+        <Row className="justify-content-center">
+          <Col md={8} className="text-center">
+            <h2 className="mb-3" style={{ color: 'var(--primary)' }}>Nuestra Historia ✨</h2>
+            <p className="lead" style={{ color: 'var(--text)' }}>
+              Fundada por un equipo de pasteleros apasionados, Sweetify nació del deseo de compartir la alegría
+              y la calidez que solo la repostería casera puede ofrecer. Nos inspiramos en sabores tradicionales
+              y tendencias innovadoras para crear una experiencia única en cada bocado. ¡Bienvenido a nuestra dulce familia!
+            </p>
+          </Col>
+        </Row>
+      </section>
     </Container>
   );
 };

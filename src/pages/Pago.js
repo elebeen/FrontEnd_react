@@ -1,7 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { CartContext } from '../context/CartContext';
-import { Form, Button, Alert, Table } from 'react-bootstrap';
+import { Form, Button, Alert, Table, Card, Badge } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { Truck, CreditCard, Person, Envelope, GeoAlt } from 'react-bootstrap-icons';
 
 const Pago = () => {
   const { carrito, vaciarCarrito } = useContext(CartContext);
@@ -10,7 +11,7 @@ const Pago = () => {
   const [exito, setExito] = useState(false);
   const navigate = useNavigate();
 
-  const total = carrito.reduce((acc, p) => acc + p.precio * p.cantidad, 0);
+  const total = carrito.reduce((acc, p) => acc + Number(p.precio) * p.cantidad, 0);
 
   const manejarCambio = e => {
     setFormulario({ ...formulario, [e.target.name]: e.target.value });
@@ -33,93 +34,161 @@ const Pago = () => {
   };
 
   return (
-            <div className="container pago-container">
-        <h2 className="text-success">Finalizar Compra</h2>
+    <div className="container my-5">
+      <Card className="border-0 shadow-sm">
+        <Card.Body className="p-4">
+          <h2 className="text-center mb-4">
+            <CreditCard className="me-2" /> Finalizar Compra
+          </h2>
 
-        {error && <Alert variant="danger">{error}</Alert>}
-        {exito && (
-            <Alert variant="success">
-            ¡Gracias por tu compra, {formulario.nombre}! 🎉
+          {error && <Alert variant="danger" className="mb-4">{error}</Alert>}
+          {exito && (
+            <Alert variant="success" className="mb-4">
+              ¡Gracias por tu compra, {formulario.nombre}! 🎉 Tu pedido ha sido procesado con éxito. Redirigiendo...
             </Alert>
-        )}
+          )}
 
-        <div className="pago-row">
-            <div className="pago-resumen">
-            <h4 className="text-pink">Resumen del Pedido</h4>
-            {carrito.length === 0 ? (
-                <p>Tu carrito está vacío.</p>
-            ) : (
-                <div className="table-responsive">
-                <Table bordered className="cart-table table table-dark table-striped table-hover">
-                    <thead className="table-header">
-                    <tr>
-                        <th>Producto</th>
-                        <th>Cantidad</th>
-                        <th>Total</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {carrito.map(p => (
-                        <tr key={p.id}>
-                        <td>{p.nombre}</td>
-                        <td>{p.cantidad}</td>
-                        <td>S/ {(p.precio * p.cantidad).toFixed(2)}</td>
-                        </tr>
-                    ))}
-                    <tr>
-                        <td colSpan="2"><strong>Total</strong></td>
-                        <td><strong>S/ {total.toFixed(2)}</strong></td>
-                    </tr>
-                    </tbody>
-                </Table>
-                </div>
-            )}
+          <div className="row">
+            {/* Resumen del Pedido - Columna izquierda */}
+            <div className="col-lg-7 mb-4 mb-lg-0">
+              <Card className="h-100 border-0">
+                <Card.Header className="bg-light">
+                  <h4 className="mb-0">
+                    <Truck className="me-2" /> Resumen del Pedido
+                  </h4>
+                </Card.Header>
+                <Card.Body>
+                  {carrito.length === 0 ? (
+                    <div className="text-center py-4">
+                      <p className="text-muted">Tu carrito está vacío.</p>
+                    </div>
+                  ) : (
+                    <div className="table-responsive">
+                      <Table hover className="mb-0">
+                        <thead className="table-light">
+                          <tr>
+                            <th style={{ width: '50%' }}>Producto</th>
+                            <th className="text-center">Cantidad</th>
+                            <th className="text-end">Subtotal</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {carrito.map(p => (
+                            <tr key={p.id}>
+                              <td>
+                                <div className="d-flex align-items-center">
+                                  <img 
+                                    src={p.imagen || '/placeholder-product.jpg'} 
+                                    alt={p.nombre}
+                                    className="me-3"
+                                    style={{ 
+                                      width: '60px', 
+                                      height: '60px', 
+                                      objectFit: 'cover', 
+                                      borderRadius: '4px' 
+                                    }}
+                                  />
+                                  <div>
+                                    <h6 className="mb-0">{p.nombre}</h6>
+                                    <small className="text-muted">S/ {Number(p.precio).toFixed(2)} c/u</small>
+                                  </div>
+                                </div>
+                              </td>
+                              <td className="text-center align-middle">
+                                <Badge bg="secondary" pill>
+                                  {p.cantidad}
+                                </Badge>
+                              </td>
+                              <td className="text-end align-middle fw-bold">
+                                S/ {(Number(p.precio) * p.cantidad).toFixed(2)}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                        <tfoot>
+                          <tr className="border-top">
+                            <td colSpan="2" className="text-end fw-bold">Subtotal:</td>
+                            <td className="text-end">S/ {total.toFixed(2)}</td>
+                          </tr>
+                          <tr>
+                            <td colSpan="2" className="text-end fw-bold">Envío:</td>
+                            <td className="text-end">Gratis</td>
+                          </tr>
+                          <tr className="border-top">
+                            <td colSpan="2" className="text-end fw-bold fs-5">Total:</td>
+                            <td className="text-end fs-5 fw-bold text-primary">
+                              S/ {total.toFixed(2)}
+                            </td>
+                          </tr>
+                        </tfoot>
+                      </Table>
+                    </div>
+                  )}
+                </Card.Body>
+              </Card>
             </div>
 
-            <div className="pago-formulario">
-            <Form onSubmit={manejarEnvio}>
-                <Form.Group className="mb-3">
-                <Form.Label>Nombre completo</Form.Label>
-                <Form.Control
-                    type="text"
-                    name="nombre"
-                    value={formulario.nombre}
-                    onChange={manejarCambio}
-                    required
-                />
-                </Form.Group>
+            {/* Formulario de Datos - Columna derecha */}
+            <div className="col-lg-5">
+              <Card className="h-100 border-0">
+                <Card.Header className="bg-light">
+                  <h4 className="mb-0">
+                    <Person className="me-2" /> Datos de Envío
+                  </h4>
+                </Card.Header>
+                <Card.Body>
+                  <Form onSubmit={manejarEnvio}>
+                    <Form.Group className="mb-3">
+                      <Form.Label><Person className="me-2" /> Nombre completo</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="nombre"
+                        value={formulario.nombre}
+                        onChange={manejarCambio}
+                        required
+                      />
+                    </Form.Group>
 
-                <Form.Group className="mb-3">
-                <Form.Label>Correo electrónico</Form.Label>
-                <Form.Control
-                    type="email"
-                    name="correo"
-                    value={formulario.correo}
-                    onChange={manejarCambio}
-                    required
-                />
-                </Form.Group>
+                    <Form.Group className="mb-3">
+                      <Form.Label><Envelope className="me-2" /> Correo electrónico</Form.Label>
+                      <Form.Control
+                        type="email"
+                        name="correo"
+                        value={formulario.correo}
+                        onChange={manejarCambio}
+                        required
+                      />
+                    </Form.Group>
 
-                <Form.Group className="mb-3">
-                <Form.Label>Dirección</Form.Label>
-                <Form.Control
-                    as="textarea"
-                    rows={2}
-                    name="direccion"
-                    value={formulario.direccion}
-                    onChange={manejarCambio}
-                    required
-                />
-                </Form.Group>
+                    <Form.Group className="mb-3">
+                      <Form.Label><GeoAlt className="me-2" /> Dirección</Form.Label>
+                      <Form.Control
+                        as="textarea"
+                        rows={3}
+                        name="direccion"
+                        value={formulario.direccion}
+                        onChange={manejarCambio}
+                        required
+                      />
+                    </Form.Group>
 
-                <Button type="submit" className="btn btn-success w-100 mt-3">
-                Pagar ahora 💳
-                </Button>
-            </Form>
+                    <Button 
+                      type="submit" 
+                      variant="primary" 
+                      size="lg" 
+                      className="w-100 mt-3"
+                      disabled={carrito.length === 0}
+                    >
+                      <CreditCard className="me-2" /> Pagar ahora
+                    </Button>
+                  </Form>
+                </Card.Body>
+              </Card>
             </div>
-        </div>
-</div>
-
+          </div>
+        </Card.Body>
+      </Card>
+    </div>
   );
 };
 
