@@ -3,34 +3,85 @@ import { CartContext } from '../context/CartContext';
 import { Form, Button, Alert, Table, Card, Badge } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { Truck, CreditCard, Person, Envelope, GeoAlt } from 'react-bootstrap-icons';
+import axios from 'axios'; // Importa axios para hacer peticiones HTTP
+import { AuthContext } from '../context/AuthContext'; // Importa AuthContext para el token de autenticación
 
 const Pago = () => {
   const { carrito, vaciarCarrito } = useContext(CartContext);
+  const { user } = useContext(AuthContext); // Obtiene el usuario del contexto de autenticación para saber si está logueado y obtener el token
   const [formulario, setFormulario] = useState({ nombre: '', correo: '', direccion: '' });
   const [error, setError] = useState('');
   const [exito, setExito] = useState(false);
+  const [loading, setLoading] = useState(false); // Nuevo estado para controlar el loading
   const navigate = useNavigate();
 
-  const total = carrito.reduce((acc, p) => acc + Number(p.precio) * p.cantidad, 0);
+  const total = carrito.reduce((acc, p) => acc + p.precio * p.cantidad, 0);
 
   const manejarCambio = e => {
     setFormulario({ ...formulario, [e.target.name]: e.target.value });
   };
 
-  const manejarEnvio = e => {
+  const manejarEnvio = async e => { // La función ahora es asíncrona
     e.preventDefault();
+
+    // 1. Validaciones iniciales
     if (!formulario.nombre || !formulario.correo || !formulario.direccion) {
-      setError('Por favor, completa todos los campos.');
+      setError('Por favor, completa todos los campos de envío.');
       return;
     }
+    if (carrito.length === 0) {
+      setError('Tu carrito está vacío. Agrega productos antes de pagar.');
+      return;
+    }
+    // Opcional: Si el decrementar stock requiere autenticación
+    if (!user) {
+        setError('Debes iniciar sesión para finalizar la compra.');
+        navigate('/login'); // Redirige al login si no está autenticado
+        return;
+    }
 
-    setError('');
-    setExito(true);
-    vaciarCarrito();
+    setLoading(true); // Inicia el estado de loading
+    setError(''); // Limpia cualquier error previo
 
-    setTimeout(() => {
-      navigate('/');
-    }, 4000);
+    const token = localStorage.getItem('access'); // Obtiene el token de acceso
+    const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
+    try {
+      // 2. Iterar sobre los productos en el carrito y decrementar el stock en la API
+      for (const item of carrito) {
+        // Realiza una petición POST por cada producto en el carrito
+        await axios.post(
+          `http://localhost:8000/api/productos/${item.id}/decrementar_stock/`,
+          { cantidad: item.cantidad }, // Envía la cantidad a decrementar
+          { headers: headers } // Incluye el token de autorización en los headers
+        );
+      }
+
+      // 3. Si todas las peticiones de decremento fueron exitosas
+      setExito(true); // Muestra mensaje de éxito
+      vaciarCarrito(); // Vacía el carrito del frontend
+
+      // 4. Redirige al usuario después de un breve tiempo
+      setTimeout(() => {
+        navigate('/');
+      }, 4000);
+
+    } catch (err) {
+      // 5. Manejo de errores de la API
+      console.error('Error al procesar el pago o decrementar stock:', err);
+      if (err.response && err.response.data && err.response.data.detail) {
+        setError(`Error: ${err.response.data.detail}`); // Mensaje de error específico de la API (ej: "Stock insuficiente")
+      } else if (err.response && err.response.data) {
+        // Si hay otros errores de validación de Django
+        const errorMessages = Object.values(err.response.data).flat().join('; ');
+        setError(`Error de validación: ${errorMessages}`);
+      }
+      else {
+        setError('Error al procesar el pago. Por favor, inténtalo de nuevo.');
+      }
+    } finally {
+      setLoading(false); // Finaliza el estado de loading, sea éxito o error
+    }
   };
 
   return (
