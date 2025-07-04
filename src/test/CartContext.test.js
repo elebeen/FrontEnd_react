@@ -1,6 +1,6 @@
 import React from 'react';
 import { renderHook, act } from '@testing-library/react';
-import { CartProvider, CartContext } from './CartContext';
+import { CartProvider, CartContext } from '../context/CartContext';
 
 // Helper para renderizar el contexto
 const renderCart = () => {

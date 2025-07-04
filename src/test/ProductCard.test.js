@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import ProductCard from './ProductCard';
+import ProductCard from '../components/ProductCard';
 
 const productoMock = {
   id: 1,

@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import CategoryFilter from './CategoryFilter';
+import CategoryFilter from '../context/CategoryFilter';
 
 describe('CategoryFilter', () => {
   const mockCategorias = [

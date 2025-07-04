@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import Footer from './Footer';
+import Footer from '../components/Footer'; // Asegúrate de que la ruta sea correcta
 
 describe('Footer', () => {
   test('muestra el título "¡Conéctate con Nosotros!"', () => {
