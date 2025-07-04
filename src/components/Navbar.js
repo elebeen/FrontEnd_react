@@ -4,20 +4,22 @@ import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { CartContext } from '../context/CartContext';
 import { FaShoppingCart, FaUser, FaSignOutAlt, FaSignInAlt, FaUserPlus } from 'react-icons/fa';
-import sweetfyLogo from '../assets/icons8-pastel-de-nata-48.png'; // Asegúrate de tener el logo en la carpeta assets
+import sweetfyLogo from '../assets/icons8-pastel-de-nata-48.png'; // Asegúrate de tener el logo en la carpeta assets}
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
-  const { carrito } = useContext(CartContext);
+  const { carrito, vaciarCarrito } = useContext(CartContext);
   const navigate = useNavigate();
+  const totalItems = carrito.reduce((total, item) => total + item.cantidad, 0);
 
   const cerrarSesion = () => {
     logout();
+    vaciarCarrito();
+    localStorage.clear(); // Vaciar el carrito al cerrar sesión
     navigate('/login');
   };
 
   // Calcular total de items en el carrito
-  const totalItems = carrito.reduce((total, item) => total + item.cantidad, 0);
 
   return (
     <BootstrapNavbar expand="lg" className="py-3 shadow-sm" style={{ 
