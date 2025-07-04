@@ -26,7 +26,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const { login } = useContext(AuthContext);
+  const { user, login } = useContext(AuthContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -68,26 +68,9 @@ const Login = () => {
       localStorage.setItem('access', res.data.access);
       localStorage.setItem('refresh', res.data.refresh);
       
-      // Obtener datos del usuario
-      const userRes = await axios.get('http://localhost:8000/api/user/', {
-        headers: {
-          Authorization: `Bearer ${res.data.access}`
-        }
-      });
-      
       // Actualizar contexto de autenticación
       login({
         token: res.data.access,
-        user: userRes.data
-      });
-      
-      toast.success(`¡Bienvenido ${userRes.data.username}!`, {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
       });
       
       navigate('/');
